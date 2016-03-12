@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="7.0.0">
+<eagle version="7.5.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -7461,6 +7461,7 @@ http://www.zetex.com&lt;p&gt;
 <part name="R22" library="rcl" deviceset="R-EU_" device="R0805" value="22k"/>
 <part name="SUPPLY5" library="supply2" deviceset="+UB" device=""/>
 <part name="T2" library="zetex" deviceset="NMOSSOT23" device="" value="IRLML6346"/>
+<part name="D2" library="diode" deviceset="SUPPRESSOR-" device="SMBJ" value="27V"/>
 </parts>
 <sheets>
 <sheet>
@@ -7567,6 +7568,7 @@ http://www.zetex.com&lt;p&gt;
 <instance part="R22" gate="G$1" x="71.12" y="121.92" rot="R90"/>
 <instance part="SUPPLY5" gate="G$1" x="71.12" y="134.62"/>
 <instance part="T2" gate="A" x="147.32" y="-17.78"/>
+<instance part="D2" gate="G$1" x="154.94" y="-27.94"/>
 </instances>
 <busses>
 </busses>
@@ -7681,13 +7683,17 @@ http://www.zetex.com&lt;p&gt;
 <wire x1="160.02" y1="-40.64" x2="160.02" y2="-12.7" width="0.1524" layer="91"/>
 <wire x1="160.02" y1="-12.7" x2="162.56" y2="-12.7" width="0.1524" layer="91"/>
 <wire x1="147.32" y1="-22.86" x2="147.32" y2="-40.64" width="0.1524" layer="91"/>
-<wire x1="147.32" y1="-40.64" x2="160.02" y2="-40.64" width="0.1524" layer="91"/>
+<wire x1="147.32" y1="-40.64" x2="154.94" y2="-40.64" width="0.1524" layer="91"/>
 <pinref part="R19" gate="G$1" pin="1"/>
+<wire x1="154.94" y1="-40.64" x2="160.02" y2="-40.64" width="0.1524" layer="91"/>
 <wire x1="139.7" y1="-35.56" x2="139.7" y2="-40.64" width="0.1524" layer="91"/>
 <wire x1="139.7" y1="-40.64" x2="147.32" y2="-40.64" width="0.1524" layer="91"/>
 <junction x="147.32" y="-40.64"/>
 <junction x="160.02" y="-40.64"/>
 <pinref part="T2" gate="A" pin="S"/>
+<pinref part="D2" gate="G$1" pin="A"/>
+<wire x1="154.94" y1="-30.48" x2="154.94" y2="-40.64" width="0.1524" layer="91"/>
+<junction x="154.94" y="-40.64"/>
 </segment>
 <segment>
 <pinref part="SV1" gate="G$1" pin="2"/>
@@ -8014,13 +8020,17 @@ http://www.zetex.com&lt;p&gt;
 <segment>
 <pinref part="X2" gate="-4" pin="KL"/>
 <pinref part="R4" gate="G$1" pin="2"/>
-<wire x1="162.56" y1="-7.62" x2="147.32" y2="-7.62" width="0.1524" layer="91"/>
+<wire x1="162.56" y1="-7.62" x2="154.94" y2="-7.62" width="0.1524" layer="91"/>
+<wire x1="154.94" y1="-7.62" x2="147.32" y2="-7.62" width="0.1524" layer="91"/>
 <wire x1="147.32" y1="-7.62" x2="137.16" y2="-7.62" width="0.1524" layer="91"/>
 <wire x1="147.32" y1="-12.7" x2="147.32" y2="-7.62" width="0.1524" layer="91"/>
 <pinref part="R17" gate="G$1" pin="1"/>
 <junction x="147.32" y="-7.62"/>
 <wire x1="147.32" y1="-7.62" x2="147.32" y2="-2.54" width="0.1524" layer="91"/>
 <pinref part="T2" gate="A" pin="D"/>
+<pinref part="D2" gate="G$1" pin="C"/>
+<wire x1="154.94" y1="-25.4" x2="154.94" y2="-7.62" width="0.1524" layer="91"/>
+<junction x="154.94" y="-7.62"/>
 </segment>
 </net>
 <net name="N$23" class="0">
