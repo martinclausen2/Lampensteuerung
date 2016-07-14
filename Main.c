@@ -4,14 +4,14 @@
  * use a P89LPC936 with internal 7.373 MHz RC oszilator
  * use a P89LPC935 or 936 with internal 7.373 MHz RC oszilator for the version without a LCD
  * Compiler options: -mmcs51 --iram-size 256 --xram-size 512 --code-size 16368 --std-sdcc89 --model-medium, all optimations on
- * SDCC 3.4.0
+ * SDCC 3.5.0
  */
 
 // This file defines registers available in P89LPC93X
 #include <p89lpc935_6.h>
 #include <stdio.h>
 
-//#define noninvertedPWM
+#define noninvertedPWM
 
 //#define LCD
 
@@ -112,7 +112,7 @@ void main()
 					#ifdef LCD
 					LCD_SendStringFill2ndLine("Enter Options");
 					#endif
-					LEDOptions();
+					LEDSetupOptions(0);
 					}
 				else if (KeyPressLong == KeyPressDuration)
 					{
@@ -138,7 +138,7 @@ void main()
 					if (LightOn)
 						{
 						StoreBrightness();	// store brightness if required
-						Alarm_StepDim();		// do next alarm dim step if required
+						Alarm_StepDim();	// do next alarm dim step if required
 						LEDLimit();
 						}
 					else
@@ -148,6 +148,10 @@ void main()
 							ADMODB = ADC1;
 							DAC1Port = 0;
 							MeasureExtBrightness();
+							if (KeySelect != KeyState)	//protect preview from being overwritten
+								{
+								LEDStandby();	//dim standby led accoring to extranl brightness
+								}
 							}
 						WriteTimer=0;
 			 			if(overTemp)
@@ -191,7 +195,7 @@ void main()
 								#ifdef LCD
 								LCD_SendStringFill2ndLine("Standby");
 								#endif
-								LEDStandby();
+								LEDSetupStandby();
 								}
 							}
 						}

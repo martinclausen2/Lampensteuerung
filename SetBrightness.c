@@ -220,7 +220,7 @@ void SwLightOff()
 		#ifdef LCD
 		LCD_SendStringFill2ndLine("Standby");
 		#endif
-		LEDStandby();
+		LEDSetupStandby();
 		}
 }
 

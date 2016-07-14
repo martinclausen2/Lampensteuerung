@@ -6,46 +6,92 @@ Controls Status LED connected to OCA (blue), OCB (green), OCC (red)
 
 void LEDOff()
 {
-	LEDSetColor(0);
-	LEDFlashCount = 0;
-}
-
-void LEDStandby()
-{
-	LEDSetColor(2);
-	LEDFlashCount = 0;
+	LEDSetColor(LEDBlank);
 }
 
 void LEDOn()
 {
-	LEDSetColor(1);
-	LEDFlashCount = 0;
-}
-
-void LEDOptions()
-{
-	LEDSetColor(3);
-	LEDFlashCount = 0;
+	LEDSetColor(LEDWhite);
 }
 
 void LEDCancel()
 {
-	LEDSetColor(4);
-	LEDFlashCount = 0;
+	LEDSetColor(LEDGreen);
 }
 
-void LEDOptionsFlash(unsigned char i)	//i should not exceed LEDmax Flash
-{
-	LEDSetColor(3);		//add offset reserved for Standby and ON
-	LEDFlashCount = i*2+1;
-}
-
-void LEDOption(unsigned char i)	//i should not exceed colorTable length - 5
+// indicate value by color
+void LEDValue(unsigned char i)		//i should not exceed colorTable length - 5
 {
 	LEDSetColor(i+5);		//add offset reserved for other status
 }
 
-void LEDOverTemp()		//flashes red LED to indicate overtemperature
+// functions to indicate current option
+void LEDSetupOptions(unsigned char i)	//i should not exceed LEDmax Flash
+{
+	LEDSetColor(flashColorTable[0]);
+	LEDFlashSeqCounter = 0;
+	LEDFlashCount = i*2+1;
+}
+
+void LEDOptions()		//flashes LED to indicate current option
+{
+	unsigned char static LEDFlashTimer;	//Software timer to decouple flashing frequency from calling frequency
+	if (LEDFlashTimer)
+		{
+		--LEDFlashTimer;
+		}
+	else
+		{
+		LEDFlashTimer = LEDmaxFlashTimer;
+		if (LEDFlashSeqCounter <= (LEDFlashCount))
+			{
+			LEDSetColor(flashColorTable[LEDFlashSeqCounter & flashColorMask]);
+			}
+		if (LEDFlashSeqCounter == LEDFlashMaxSeqSteps)
+			{
+			LEDFlashSeqCounter = 0;
+			}
+		else
+			{
+			++LEDFlashSeqCounter;		//upcounting required for proper reading of flash color table
+			}
+		}
+}
+
+// functions to indicate standby and dim the status led according to surrounding brightness
+
+void LEDSetupStandby()					//call once before entering standby, then call LEDStandby repeatedly
+{
+	LEDSetColor(LEDRed);
+	LEDStandbyTimer = LEDmaxStandyTimer;
+}
+
+void LEDStandby()
+{
+	if (LEDStandbyTimer)
+		{
+		--LEDStandbyTimer;
+		}
+		else
+		{
+			if (ExtBrightness > 0xFFFF0)	// must be equal to 0xFFFF << 4
+				{
+				OCRCL = 0xFF;
+				OCRCH = 0xFF;
+				}
+			else
+				{
+				//dim red LED along with external brightness
+				OCRCL = (ExtBrightness >> 4) & 0x00FF;
+				OCRCH = (ExtBrightness >> 12) & 0x00FF;
+				}
+			TCR21 = PLLSetting;	//Set PLL prescaler and start CCU register update
+		}
+}
+
+// functions to indicate overtemperture and temperature derating
+
+void LEDOverTemp()			//flashes red LED to indicate overtemperature
 {
 	unsigned char static LEDFlashTimer;	//Software timer to decouple flashing frequency from calling frequency
 	__bit static Status;
@@ -92,19 +138,7 @@ void LEDTempReset()
 		}
 }
 
-void LEDLimit()		//blanks LED to indicate brightness limit
-{
-	if (LEDLimitFlashTimer)
-		{
-		--LEDLimitFlashTimer;
-		if (0==LEDLimitFlashTimer)	//Restore LED status
-			{
-			BlueLEDPort = 1;
-			GreenLEDPort = 1;
-			RedLEDPort = 1;
-			}
-		}
-}
+// two functions to indicate lower and upper limit of brightness setting
 
 void LEDSetupLimit()
 {
@@ -122,53 +156,38 @@ void LEDSetupLimit()
 		}
 }
 
-void LEDFlashing()		//flashes the blue LED to indicate current option
+void LEDLimit()		//blanks LED to indicate brightness limit
 {
-	unsigned char static LEDFlashTimer;	//Software timer to decouple flashing frequency from calling frequency
-	if (LEDFlashTimer)
+	if (LEDLimitFlashTimer)
 		{
-		--LEDFlashTimer;
-		}
-	else
-		{
-		LEDFlashTimer = LEDmaxFlashTimer;
-		if (LEDFlashSeqCounter <= (LEDFlashCount))	//toggel pin
+		--LEDLimitFlashTimer;
+		if (0==LEDLimitFlashTimer)	//Restore LED status
 			{
-				BlueLEDPort = LEDFlashSeqCounter & 0b01;
-			}
-		if (LEDFlashSeqCounter)
-			{
-			--LEDFlashSeqCounter;
-			}
-		else
-			{
-			LEDFlashSeqCounter = LEDFlashMaxSeq << 1 & 0xFE;
+			BlueLEDPort = 1;
+			GreenLEDPort = 1;
+			RedLEDPort = 1;
 			}
 		}
 }
 
-void LEDFlashReset()
-{
-	LEDFlashSeqCounter = 0;
-	BlueLEDPort = 1;
-}
+// function to set PWM for status led
 
 void LEDSetColor(unsigned char i)
 {
 	unsigned int tempPWM;
-	tempPWM = colorTable[i][0];
+	tempPWM = colorTable[i][0];	//blue
 	tempPWM *= tempPWM;
 
 	OCRAL = tempPWM & 0x00FF;
 	OCRAH = (tempPWM >> 8) & 0x00FF;
 
-	tempPWM = colorTable[i][1];
+	tempPWM = colorTable[i][1];	//green
 	tempPWM *= tempPWM;
 
 	OCRBL = tempPWM & 0x00FF;
 	OCRBH = (tempPWM >> 8) & 0x00FF;
 
-	tempPWM = colorTable[i][2];
+	tempPWM = colorTable[i][2];	//red
 	tempPWM *= tempPWM;
 
 	OCRCL = tempPWM & 0x00FF;

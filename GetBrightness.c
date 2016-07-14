@@ -8,7 +8,7 @@
  */
 
 #define BrightexpPointsToAvg	6	//points to average in 2^x format
-#define BrightInitCycles		0xFF	//at least 2^x
+#define BrightInitCycles	0xFF	//at least 2^x
 
 #define minphotoamp	15
 #define maxphotoamp	200
@@ -23,8 +23,8 @@ __code unsigned int photoampfactor[3] = {1, 33, 1000};
 
 void MeasureExtBrightness()
 {
-	unsigned char static PhotoGain;
 	unsigned char ADC_Result;
+	unsigned char static PhotoGain;
 	ADCON1 = 0b00000101; 			//Enable ADC&DAC 1 immediate start
 						//in the meantime: remove a 1/64 so we have a moving average over 64 datapoints
 	ExtBrightness -= (ExtBrightness >> BrightexpPointsToAvg) & 0x03FFFF;

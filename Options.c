@@ -74,14 +74,14 @@ void LCD_MinuteOff(unsigned char Value, unsigned char maxValue)
 		#ifdef LCD
 		printf_fast("instantly ");
 		#endif
-		LEDOption(0);
+		LEDValue(0);
 		}
 	else if (2==Value)
 		{
 		#ifdef LCD
 		printf_fast(" 1 Minute ");
 		#endif
-		LEDOption(1);
+		LEDValue(1);
 		}
 	else 
 		{
@@ -90,15 +90,15 @@ void LCD_MinuteOff(unsigned char Value, unsigned char maxValue)
 		#endif
 		if (Value < (maxValue>>2 & 0x3F))
 			{
-			LEDOption(1);
+			LEDValue(1);
 			}
 		else if (Value < (maxValue>>1 & 0x7F))
 			{
-			LEDOption(2);
+			LEDValue(2);
 			}
 		else
 			{
-			LEDOption(3);
+			LEDValue(3);
 			}
 		}
 }
@@ -151,10 +151,9 @@ void LCD_ExtBrightness(unsigned char value)
 	LCD_SendCmd(LCDSet2ndLine);
 	printf_fast("Meas %3d,Set %3d", GetMotionDetectorExtBrightnessValue(), value);
 	#endif
-	LEDOption(value >> 6 & 0x03);
+	LEDValue(value >> 6 & 0x03);
 }
 
-//change contrast setting of LCD and store in EEPROM
 void SetupExtBrightness()
 {
 	unsigned char value;
@@ -176,7 +175,7 @@ void LCD_Contrast(unsigned char Contrast)
 {
 	LCD_SendCmd(LCDSet2ndLine);
 	printf_fast("Contrast %2d", Contrast);
-	LEDOption(Contrast >> 2 & 0x03);
+	LEDValue(Contrast >> 2 & 0x03);
 }
 
 //change contrast setting of LCD and store in EEPROM
@@ -204,7 +203,7 @@ void LCD_SetupRCAddress(unsigned char Address)	//Address will not be referenced 
 	LCD_SendCmd(LCDSet2ndLine);
 	printf_fast("Addr %2d         ", Address);
 	#endif
-	LEDOption(0);
+	LEDValue(0);
 }
 
 //change RC5 address by receiving a now one and store it after a key being pressed in the EEPROM
@@ -224,7 +223,7 @@ void SetupRCAddress()
 				LCD_SendCmd(LCDSet2ndLine);
 				printf_fast("Addr %2d Cmd %2d %1d", Address, rCommand, RTbit);
 				#endif
-				LEDOption(1);
+				LEDValue(1);
 				rCounter=0;		//Nach Erkennung zurücksetzen
 				}
 			}
@@ -246,7 +245,7 @@ void LCD_InitEEPROMYN(unsigned char j)
 	LCD_SendString2ndLine("Reset? ");
 	LCD_SendString(&noyestext[j][0]);
 	#endif
-	LEDOption(j);
+	LEDValue(j);
 }
 
 //reset EEPROM to default values
@@ -281,7 +280,7 @@ void LCD_ComMode(unsigned char j)
 	#ifdef LCD
 	LCD_SendString2ndLine(&ComModetext[j][0]);
 	#endif
-	LEDOption(j);
+	LEDValue(j);
 }
 
 //Setup communication mode
@@ -307,7 +306,7 @@ void LCD_CurrentOption(unsigned char Option)
 	#ifdef LCD
 	LCD_SendString2ndLine(&OptionNames[Option][0]);
 	#endif
-	LEDOptionsFlash(Option);
+	LEDSetupOptions(Option);
 }
 
 void LCD_Option(unsigned char Option)
@@ -336,12 +335,10 @@ void Options()
 		if (TimerFlag)
 			{
 			TimerFlag = 0;		//acknowledge
-			LEDFlashing();
 			if (KeySelect == KeyState)
 				{
 				if (KeyPressShort == KeyPressDuration)
 					{
-					LEDFlashReset();
 					#ifdef LCD
 					LCD_SendStringFill2ndLine("Exit Options");
 					#endif
@@ -351,7 +348,7 @@ void Options()
 						}
 						else
 						{
-						LEDStandby();
+						LEDSetupStandby();
 						}
 					}
 				else if (KeyPressLong == KeyPressDuration)
@@ -369,12 +366,12 @@ void Options()
 				{
 				if (KeyPressShort > KeyPressDuration)
 					{
-					OldKeyState=0;				//acknowldge key pressing
+					OldKeyState=0;			//acknowledge key pressing
 					#ifdef LCD
-					LCD_ClearDisplay();			//prepare display for submenu
+					LCD_ClearDisplay();		//prepare display for submenu
 					LCD_SendString(&OptionNames[Option][0]);	// display option name in first line
 					#endif
-					LEDFlashReset();				//prepare LED
+					LEDSetupOptions(0);		//prepare LED
 					switch (Option)
 						{
 						case 0:
@@ -424,7 +421,11 @@ void Options()
 					LCD_CurrentOption(Option);	//Cancel key pressing, refresh display
 					}
 				OldKeyState=0;			//acknowldge key pressing
-				EncoderSteps = 0;			//reset steps
+				EncoderSteps = 0;		//reset steps
+				}
+			else
+				{
+				LEDOptions();
 				}
 			if (EncoderSetupValue(&Option, maxOption, 0))
 				{
@@ -436,5 +437,4 @@ void Options()
 	#ifdef LCD
 	LCD_ClearDisplay();
 	#endif
-	LEDFlashReset();
 }
