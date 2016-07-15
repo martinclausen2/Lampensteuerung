@@ -8,15 +8,15 @@
 
 // define EEPROM mapping
 #define EEAddr_RC5Addr 0			//RC5 Address
-#define EEAddr_LCDContrast 1		//LCD contrast setting
+#define EEAddr_LCDContrast 1			//LCD contrast setting
 #define EEAddr_LightFading	2		//Minutes to fade light in
-#define EEAddr_AlarmFrontBrightness 3	//Brightness during alarm
+#define EEAddr_AlarmFrontBrightness 3		//Brightness during alarm
 #define EEAddr_ReceiverMode 4
-#define EEAddr_MinimumFrontBrightness 5	//Minium Brightness during power on
-#define EEAddr_OffsetFrontBrightness 6	//Brightness Offset of the frontlight
+#define EEAddr_MinimumFrontBrightness 5		//Minium Brightness during power on
+#define EEAddr_OffsetFrontBrightness 6		//Brightness Offset of the frontlight
 #define EEAddr_DetectorTimeout 7		//Time the lights starts to fade out after the motion detector input was triggered
-#define EEAddr_DetectorBrightness 8		//Time the lights starts to fade out after the motion detector input was triggered
-#define EEAddr_ExtBrightness_last_MSB 9	//MSB of the measured external brightness belonging to the last stored brightness setting
+#define EEAddr_DetectorBrightness 8		//Maximum brightness up to which the motion detector input active
+#define EEAddr_ExtBrightness_last_MSB 9		//MSB of the measured external brightness belonging to the last stored brightness setting
 #define EEAddr_ExtBrightness_last_LSB 10	//LSB of the measured external brightness
 #define EEAddr_CurrentBrightness 11		//last stored brightness setting
 
