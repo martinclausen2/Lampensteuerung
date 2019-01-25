@@ -57,6 +57,8 @@ void LEDCancel();
 
 void LEDOptions();
 
+void LEDFadeLightOut();
+
 void LEDSetupOptions(unsigned char i);
 
 void LEDValue(unsigned char i);

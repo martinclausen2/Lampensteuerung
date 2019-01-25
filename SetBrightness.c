@@ -213,6 +213,7 @@ void SwLightOff()
 		{
 		LightOn=0;
 		Alarmflag=0;
+		FadeLightOutFlag=0;
 		Brightness_start=Brightness;
 		Brightness=0;
 		PWM_SetupDim(fadetime, 0, 0);
