@@ -139,10 +139,15 @@ void FadeLightOut_StepDim()
 
 void FadeLightOut()
 {
-	if (1==LightOn)
+	if (FadeLightOutFlag==1)
+	{
+		FadeLightOutFlag=0;
+		SendBrightness();
+	}
+	else if ((1==LightOn) && (Brightness > 0))
 	{
 		FadeLightOutFlag=1;
-		FadeLightOut_Cnt_Reload=(45*RTCIntfrequ*60)/Brightness;	//45 Minutes fade light out duration
+		FadeLightOut_Cnt_Reload=((unsigned int)90*RTCIntfrequ*60)/Brightness;	//90 Minutes fade light out duration
 		FadeLightOut_Cnt=FadeLightOut_Cnt_Reload;
 		LEDFadeLightOut();
 		#ifdef LCD
@@ -179,6 +184,9 @@ void DecodeRemote()
 					case 13:			//mute
 						SwLightOff();
 						break;
+					case 56:
+						FadeLightOut();
+						break;
 					default:
 						SetBrightnessLevelRemote();
 						break;
@@ -200,9 +208,6 @@ void DecodeRemote()
 				case 33:				//decr channel
 					SwLightOnMin();
 					WriteTimer=WriteTime;
-					break;
-				case 56:
-					FadeLightOut();
 					break;
 	  			}
 	  		RTbitold=RTbit;				//Togglebit speichern
