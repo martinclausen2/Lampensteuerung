@@ -11,22 +11,25 @@
 #define RC5Addr_com	29		//address for RC5 communication
 #define maxRC5Address	31		//maximum possible RC5 address
 
-#define RC5Cmd_AlarmStart	53		//code for start of alarm
-#define RC5Cmd_AlarmEnd	54		//code for end of alarm
-#define RC5Cmd_Off	13		//code for light off
-#define RC5Cmd_On		12		//code for light on
+#define RC5Cmd_AlarmStart	53	//code for start of alarm
+#define RC5Cmd_AlarmEnd		54	//code for end of alarm
+#define RC5Cmd_Off		13	//code for light off
+#define RC5Cmd_On		12	//code for light on
 
-#define RC5Cmd_Repeats	3		//number of repeats for on, off and AlarmStart commands
-#define RC5Value_Repeats	1		//number of repeats for value transmission
+#define RC5Cmd_Repeats		3	//number of repeats for on, off and AlarmStart commands
+#define RC5Value_Repeats	1	//number of repeats for value transmission
 
-#define RemoteSteps	2		//Step size for brightness control via remote control
-#define Brightness_steps	20		//number of steps used to execute a brightness change
+#define RemoteSteps		2	//Step size for brightness control via remote control
+#define Brightness_steps	20	//number of steps used to execute a brightness change
 
 __data volatile unsigned char rCommand;   //Bitte erhalten! Wenn Befehl fertig: auswerten
 __data volatile unsigned char rAddress;   //Bitte erhalten! Wenn Befehl fertig: auswerten
 __data volatile unsigned char rCounter;   //Bitte erhalten!
 
 __bit volatile RTbit;			//Togglebit von RC5
+
+unsigned int FadeLightOut_Cnt = 0;
+unsigned int FadeLightOut_Cnt_Reload = 0;
 
 //State Machine zur Decodierung des RC5-Fernbedieungscodes
 __code unsigned char tblRemote[] =
@@ -109,6 +112,50 @@ void SetBrightnessRemote()
 		}
 }
 
+//sleep light fade out
+void FadeLightOut_StepDim()
+{
+	if (FadeLightOutFlag)
+		{
+		if (FadeLightOut_Cnt)
+			{
+			--FadeLightOut_Cnt;				//count down step
+			}
+		else							//dimming step
+			{
+			if (Brightness > 0)
+				{
+				FadeLightOut_Cnt=FadeLightOut_Cnt_Reload;	//reload countdown
+				PWM_SetupDim(Brightness_steps, -1, 0);	//setup brightness
+				}
+			else
+				{
+				FadeLightOutFlag=0;			//we reached targetbrightness!
+				SwLightOff();
+				}
+			}
+		}
+}
+
+void FadeLightOut()
+{
+	if (FadeLightOutFlag==1)
+	{
+		FadeLightOutFlag=0;
+		SendBrightness();
+	}
+	else if ((1==LightOn) && (Brightness > 0))
+	{
+		FadeLightOutFlag=1;
+		FadeLightOut_Cnt_Reload=((unsigned int)90*RTCIntfrequ*60)/Brightness;	//90 Minutes fade light out duration
+		FadeLightOut_Cnt=FadeLightOut_Cnt_Reload;
+		LEDFadeLightOut();
+		#ifdef LCD
+		LCD_SendStringFill2ndLine("Light fades out");
+		#endif
+	}
+}
+
 void SetBrightnessLevelRemote()
 {
 	if (rCommand<=10)
@@ -136,6 +183,9 @@ void DecodeRemote()
 						break;
 					case 13:			//mute
 						SwLightOff();
+						break;
+					case 56:
+						FadeLightOut();
 						break;
 					default:
 						SetBrightnessLevelRemote();

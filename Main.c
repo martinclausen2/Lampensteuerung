@@ -3,8 +3,8 @@
  * @file Main.c
  * use a P89LPC936 with internal 7.373 MHz RC oszilator
  * use a P89LPC935 or 936 with internal 7.373 MHz RC oszilator for the version without a LCD
- * Compiler options: -mmcs51 --iram-size 256 --xram-size 512 --code-size 16368 --std-sdcc89 --model-medium, all optimations on
- * SDCC 3.5.0
+ * Compiler options: -mmcs51 --iram-size 256 --xram-size 512 --code-size 16368 --std-sdcc99 --model-medium, all optimations on
+ * SDCC 3.8.0
  */
 
 // This file defines registers available in P89LPC93X
@@ -25,6 +25,7 @@ void T0_isr(void) __interrupt (1);		//int from Timer 0 to read RC5 state
 void WDT_RTC_isr(void) __interrupt (10);	//int from internal RTC to update PWM, read keys, ...
 
 __bit volatile TimerFlag;
+__bit FadeLightOutFlag;
 __bit Alarmflag;
 __bit LightOn;
 __bit enableExtBrightness;
@@ -139,6 +140,7 @@ void main()
 						{
 						StoreBrightness();	// store brightness if required
 						Alarm_StepDim();	// do next alarm dim step if required
+						FadeLightOut_StepDim();	// do next fade out dim step if required
 						LEDLimit();
 						}
 					else

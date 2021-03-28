@@ -19,6 +19,11 @@ void LEDCancel()
 	LEDSetColor(LEDGreen);
 }
 
+void LEDFadeLightOut()
+{
+	LEDSetColor(LEDGreen);
+}
+
 // indicate value by color
 void LEDValue(unsigned char i)		//i should not exceed colorTable length - 5
 {

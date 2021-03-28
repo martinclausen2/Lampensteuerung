@@ -6,7 +6,7 @@
 #include "LCD_EA_DOG_SPI.h"
 
 // link stdio to LCD
-void  putchar(char c) 
+int  putchar(int c) 
 {
 	LCD_SendData(c);
 }
