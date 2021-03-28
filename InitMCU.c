@@ -19,7 +19,7 @@ DAC and ADC can NOT be used at the same time, also if the DAC output is filtered
 #define P0M1def   0b00010011
 
 #define DAC1	0b00001000	//ADC Clk  (0,5 to 3,3MHz allowed) Divisor 1 disable DAC0,  enable DAC1
-#define ADC1	0b00000000	//ADC Clk  (0,5 to 3,3MHz allowed) Divisor 1 disable DAC0, disable DAC1
+#define ADC1	0b01100000	//ADC Clk  (0,5 to 3,3MHz allowed) Divisor 8 disable DAC0, disable DAC1
 
 #define DAC1Port  P0_4		//should be pulled low by an open drain output if not controlled by the DAC
 
