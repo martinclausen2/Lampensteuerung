@@ -7,29 +7,29 @@
  * V0 2014-08-31
  */
 
-#define BrightexpPointsToAvg	6	//points to average in 2^x format
-#define BrightInitCycles	0xFF	//at least 2^x
+#define BrightexpPointsToAvg	6	/* points to average in 2^x format */
+#define BrightInitCycles	0xFF	/* at least 2^x */
 
 #define minphotoamp	15
 #define maxphotoamp	200
 #define minphotogain	0b00
 #define maxphotogain	0b10
 
-unsigned long ExtBrightness;		//will be filled up to 24 bit with 64 datapoint moving average
+unsigned long ExtBrightness;		/* will be filled up to 24 bit with 64 datapoint moving average */
 
-/**amplification factors of photoamp */
-__code unsigned char PhotoGainTable[3] = {0b01100000, 0b10100000, 0b11000000};	//low "active", use only 3 upper MSB
+/* amplification factors of photoamp */
+__code unsigned char PhotoGainTable[3] = {0b01100000, 0b10100000, 0b11000000};	/* low "active", use only 3 upper MSB */
 __code unsigned int photoampfactor[3] = {1, 33, 1000};
 
 void MeasureExtBrightness()
 {
 	unsigned char ADC_Result;
 	unsigned char static PhotoGain;
-	ADCON1 = 0b00000101; 			//Enable ADC&DAC 1 immediate start
-						//in the meantime: remove a 1/64 so we have a moving average over 64 datapoints
+	ADCON1 = 0b00000101; 			/* Enable ADC&DAC 1 immediate start
+						   in the meantime: remove a 1/64 so we have a moving average over 64 datapoints */
 	ExtBrightness -= (ExtBrightness >> BrightexpPointsToAvg) & 0x03FFFF;
-	while (0 == ADCON1 & ADCI1) {}		//wait for ADC
-	ADC_Result=0xFF-AD1DAT0;			//fetch & reverse
+	while (0 == ADCON1 & ADCI1) {}		/* wait for ADC */
+	ADC_Result=0xFF-AD1DAT0;		/* fetch & reverse */
 	ExtBrightness += ADC_Result * photoampfactor[PhotoGain];
 	if ((maxphotoamp < ADC_Result) && (maxphotogain > PhotoGain))
 		{
@@ -40,7 +40,7 @@ void MeasureExtBrightness()
 		--PhotoGain;
 		}
 
-	//switch current sources on and off by toggeling Port between Push/Pull and Open Drain
+	/* switch current sources on and off by toggeling Port between Push/Pull and Open Drain */
 	P0M1 = PhotoGainTable[PhotoGain] | P0M1def;
 }
 
@@ -51,6 +51,6 @@ void InitMeasureExtBrightness()
 	for(i = BrightInitCycles; i; i--)
 		{
 		MeasureExtBrightness();
-		PCON=MCUIdle;		//some delay, some interupts should be active
+		PCON=MCUIdle;		/* some delay, some interupts should be active */
 		}
 }

@@ -7,7 +7,7 @@
 
 unsigned char Read_EEPROM(unsigned char address)
 {
-	DEECON=0;		//clear EEIF, Byte read / write, first page
+	DEECON=0;		/* clear EEIF, Byte read / write, first page */
 	DEEADR=address;
 	while( 0 == (DEECON & EEIF) ){}
 	return DEEDAT;
@@ -15,9 +15,9 @@ unsigned char Read_EEPROM(unsigned char address)
 
 void Write_EEPROM(unsigned char address, unsigned char data2write)
 {
-	if (Read_EEPROM(address)!=data2write)	//write only if content has changed!
+	if (Read_EEPROM(address)!=data2write)	/* write only if content has changed! */
 		{
-		DEECON=0;	//clear EEIF, Byte read / write, first page
+		DEECON=0;	/* clear EEIF, Byte read / write, first page */
 		DEEDAT=data2write;
 		DEEADR=address;
 		while( 0 == (DEECON & EEIF) ){}

@@ -9,27 +9,27 @@
  * A Rotation occured if 0!=EncoderSteps
  * EncoderSteps = 0 must be set by receiving program after decoding
  * Example
-// if (EncoderSteps)
-// {
-// 	LCD_ClearDisplay();
-//	printf_tiny("Encoder %d",  EncoderSteps);
-//	EncoderSteps=0;
-// }
+ *  if (EncoderSteps)
+ *  {
+ *  	LCD_ClearDisplay();
+ * 	printf_tiny("Encoder %d",  EncoderSteps);
+ * 	EncoderSteps=0;
+ *  }
 */
 
-// Encoder and Keys should not overlap in their bits
-#define EncoderPort	P1		//select port with encoder
-#define SelEncoder 	0b00000011	//select Encoder bits, must be two lower bits
-#define SelEncoderState	0b00011100	//select Enocder state bits
+/*  Encoder and Keys should not overlap in their bits */
+#define EncoderPort	P1		/* select port with encoder */
+#define SelEncoder 	0b00000011	/* select Encoder bits, must be two lower bits */
+#define SelEncoderState	0b00011100	/* select Enocder state bits */
 #define KeyIncr		0b00000001
 #define KeyDecr		0b00000010
-#define ShiftEncoderAccel	0x02		//max 7, depends on caling frequency of encoder decode function and required acceleration
-#define SelEncoderAccel	0x3F		//depends on ShiftEncoderAccel, should mask lsbs shifted to msb
-#define maxEncoderSteps	90		//avoid overflow, must be smaller than 0x7F - accellerated steps to be added, see also maxEncoderAccel
-#define minEncoderSteps	-90
-#define EncoderAccelStep	0x03		//depends on caling frequency of encoder decode function and required acceleration
-#define maxEncoderAccel    0x7F		//avoid overflow, must be smaller than 0xFF - EncoderAccleStep and (0x7F - maxEncoderSteps) * 2^ShiftEncoderAccel = 148
-#define startEncoderDecay	0x7F		//start value for decrementing accelleration, depends on calling frequency
+#define ShiftEncoderAccel	0x02		/* max 7, depends on caling frequency of encoder decode function and required acceleration */
+#define SelEncoderAccel		0x3F		/* depends on ShiftEncoderAccel, should mask lsbs shifted to msb */
+#define maxEncoderSteps		90		/* avoid overflow, must be smaller than 0x7F - accellerated steps to be added, see also maxEncoderAccel */
+#define minEncoderSteps		-90
+#define EncoderAccelStep	0x03		/* depends on caling frequency of encoder decode function and required acceleration */
+#define maxEncoderAccel    	0x7F		/* avoid overflow, must be smaller than 0xFF - EncoderAccleStep and (0x7F - maxEncoderSteps) * 2^ShiftEncoderAccel = 148 */
+#define startEncoderDecay	0x7F		/* start value for decrementing accelleration, depends on calling frequency */
 
 /** State Machine table for rotational encoder
    Format: IN  ACC.0 inc
@@ -58,17 +58,17 @@ volatile signed char EncoderSteps;
 
 void Encoder()
 {
-	static unsigned char EncoderState;	//stores the encoder state machine state
+	static unsigned char EncoderState;	/* stores the encoder state machine state */
 	static unsigned char OldEncoderState;
 	static unsigned char EncoderAccel;
 	static unsigned char EncoderDecay;
 
-	//construct new state machine input from encoder state and old state
+	/* construct new state machine input from encoder state and old state */
 	EncoderState &= SelEncoderState;
 	EncoderState |= (SelEncoder & EncoderPort);
 	EncoderState = tblEncoder[EncoderState];
 
-	//Measure the number of steps, introduce acceleration
+	/* Measure the number of steps, introduce acceleration */
 	if (KeyIncr == EncoderState)
 		{
 		if ((EncoderState == OldEncoderState) && (maxEncoderSteps > EncoderSteps))
@@ -82,7 +82,7 @@ void Encoder()
 			}
 		else
 			{
-			EncoderSteps = 1;			//change in direction
+			EncoderSteps = 1;			/* change in direction */
 			OldEncoderState = EncoderState;
 			EncoderAccel = 0;
 			}
@@ -100,7 +100,7 @@ void Encoder()
 			}
 		else
 			{
-			EncoderSteps = -1;		//change in direction
+			EncoderSteps = -1;		/* change in direction */
 			OldEncoderState = EncoderState;
 			EncoderAccel = 0;
 			}
@@ -114,22 +114,22 @@ void Encoder()
 		EncoderDecay=startEncoderDecay;
 		if (EncoderAccel)
 			{
-			--EncoderAccel;			//no new step, decrease acceleration
+			--EncoderAccel;			/* no new step, decrease acceleration */
 			}
 		}
 }
 
-//check encoder and change value within limits, returns true if value was changed
+/* check encoder and change value within limits, returns true if value was changed */
 unsigned char EncoderSetupValue(unsigned char *Value, unsigned char maxValue, unsigned char minValue)
 {
 	signed int temp;
 	unsigned char returnval;
-	// A Rotation occured if EncoderSteps!= 0
-	// EncoderSteps = 0 must be set by receiving program after decoding
+	/*  A Rotation occured if EncoderSteps!= 0
+	    EncoderSteps = 0 must be set by receiving program after decoding */
 	if (EncoderSteps)
 		{
 		temp = EncoderSteps;
-		EncoderSteps = 0;			//ack received steps
+		EncoderSteps = 0;			/* ack received steps */
 		temp += *Value;
 		if (maxValue < temp)
 			{

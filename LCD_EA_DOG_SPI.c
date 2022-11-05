@@ -5,17 +5,17 @@
 #include <p89lpc935_6.h>
 #include "LCD_EA_DOG_SPI.h"
 
-// link stdio to LCD
+/*  link stdio to LCD
 int  putchar(int c) 
 {
 	LCD_SendData(c);
 }
 
-// Waits 2 + 3*N us at 6MHz at a two-clock core
+/*  Waits 2 + 3*N us at 6MHz at a two-clock core */
 void Wait2us(unsigned char two_us)
 {
 	unsigned char j;
-	for(j=two_us; j; j--){}		//we count down here because it is faster
+	for(j=two_us; j; j--){}		/* we count down here because it is faster */
 }
 
 /*				Cycles
@@ -31,23 +31,23 @@ void Wait2us(unsigned char two_us)
 */
 
 
-// Waits 100us at 6MHz at a two-clock core
+/*  Waits 100us at 6MHz at a two-clock core */
 void Wait100us(unsigned char hundred_us)
 {
 	unsigned char j;
-	for(j=hundred_us; j; j--){	//we count down here because it is faster
+	for(j=hundred_us; j; j--){	/* we count down here because it is faster */
 		Wait2us(47);
 	}
 }
 
 void LCD_Send(unsigned char Data)
 {
-	LCD_CSB = 0;			//select LCD
-	SPDAT = Data;			//send data
-	while(0 == (SPSTAT & SPIF)){}	//wait for SPi to finish
-	SPSTAT &= ~SPIF;			//reset flag
-	Wait2us(14);			//wait 27µs for LCD to execute command
-	LCD_CSB = 1;			//release LCD
+	LCD_CSB = 0;			/* select LCD */
+	SPDAT = Data;			/* send data */
+	while(0 == (SPSTAT & SPIF)){}	/* wait for SPi to finish */
+	SPSTAT &= ~SPIF;		/* reset flag */
+	Wait2us(14);			/* wait 27µs for LCD to execute command */
+	LCD_CSB = 1;			/* release LCD */
 }
 
 void LCD_SendCmd(unsigned char Command)
@@ -58,7 +58,7 @@ void LCD_SendCmd(unsigned char Command)
 
 void LCD_SendData(unsigned char Data)
 {
-	LCDRS = 1;			//select data register
+	LCDRS = 1;			/* select data register */
 	LCD_Send(Data);
 }
 
@@ -77,17 +77,17 @@ void LCD_ReturnHome()
 void LCD_SetContrast(unsigned char Contrast)
 {
 	LCD_SendCmd(LCDFunctionSet1);
-	Contrast&=0x0f;		//use only lower bits
-	Contrast|=LCDContrastSet;	//add command
+	Contrast&=0x0f;			/* use only lower bits */
+	Contrast|=LCDContrastSet;	/* add command */
 	LCD_SendCmd(Contrast);
 	LCD_SendCmd(LCDFunctionSet0);
 }
 
 void LCD_SendString(__code unsigned char *var)
 {
-         while(*var)			//till string ends
+         while(*var)			/* till string ends */
 		{
-     		LCD_SendData(*var++);	//send characters one by one
+     		LCD_SendData(*var++);	/* send characters one by one */
      		}
 }
 
@@ -108,18 +108,18 @@ void LCD_SendStringFill2ndLine(__code unsigned char *var)
 {
      	unsigned char i = charPerLine;
      	LCD_SendCmd(LCDSet2ndLine);
-     	while(*var)			//till string ends
+     	while(*var)			/* till string ends */
 		{
-     		LCD_SendData(*var++);	//send characters one by one
+     		LCD_SendData(*var++);	/* send characters one by one */
      		i--;
      		}
-     	for(;i>0;i--)			//fill remainder with space
+     	for(;i>0;i--)			/* fill remainder with space */
      	{
      		LCD_SendData(0x020);
      	}
 }
 
-// Init LCD, for 3V, Coursor off
+/*  Init LCD, for 3V, Coursor off */
 void LCD_Init3V()
 {
 	LCD_CSB = 1;
@@ -136,7 +136,7 @@ void LCD_Init3V()
 	LCD_SendCmd(LCDEntryModeSet);
 }
 
-// Init LCD, for 5V, Coursor off
+/*  Init LCD, for 5V, Coursor off */
 void LCD_Init5V()
 {
 	LCD_CSB = 1;

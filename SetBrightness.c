@@ -1,4 +1,4 @@
-/** Sets out PWM value for LampenSteuerung
+/*  Sets out PWM value for LampenSteuerung
  *  Hardware CCU of P89LPC93X
  */
 
@@ -12,8 +12,8 @@ void PWM_Set()
 			{
 			temp=maxRawPWM;
 			}
-		// add min pulse width => we do not use full 16 bit resolution
-		// & reach PWM = 100% on for Brightness = 0x7F
+		/*  add min pulse width => we do not use full 16 bit resolution
+		   & reach PWM = 100% on for Brightness = 0x7F  */
 		OCRDH =  ((temp >> 6) & 0x00FF);
 		OCRDL = (((temp << 2) & 0x00FC) | 0x0003);
 		}
@@ -22,14 +22,14 @@ void PWM_Set()
 		OCRDH = 0;
 		OCRDL = 0;
 		}
-	AD1DAT3 = OCRDH;		//set analogue output
-	TCR21 = PLLSetting;	//Set PLL prescaler and start CCU register update
+	AD1DAT3 = OCRDH;	/* set analogue output */
+	TCR21 = PLLSetting;	/* Set PLL prescaler and start CCU register update */
 }
 
 void LCD_SendBrightness()
 {
 	unsigned int displayvalue;
-	displayvalue = (Brightness*202) >> 8;		//scale to 100%
+	displayvalue = (Brightness*202) >> 8;		/* scale to 100% */
 	#ifdef LCD
 	LCD_SendString2ndLine("On ");
 	printf_fast("%3d%%        ", displayvalue);
@@ -39,7 +39,7 @@ void LCD_SendBrightness()
 void SendBrightness()
 {
 	ADMODB = DAC1;
-	PWM_Set();	//importent order: first DAC on then imedeatly wirte value to avoid spike on output
+	PWM_Set();	/* importent order: first DAC on then imedeatly wirte value to avoid spike on output */
 	LightOn=1;
 	LCD_SendBrightness();
 	LEDOn();
@@ -73,7 +73,7 @@ void SetExtBrightness_last()
 
 void StoreBrightness()
 {
-	if (1<WriteTimer)		//store current brightness after timeout
+	if (1<WriteTimer)		/* store current brightness after timeout */
 		{
 		--WriteTimer;
 		}
@@ -90,7 +90,7 @@ void StoreBrightness()
 		}
 }
 
-void PWM_StepDim()		// perform next dimming step, must frquently called for dimming action
+void PWM_StepDim()		/*  perform next dimming step, must frquently called for dimming action */
 {
 	if (PWM_incr_cnt)
 		{
@@ -104,7 +104,7 @@ void PWM_SetupDim(signed int PWM_dimsteps, signed char Steps, signed int minBrig
 	signed int temp;
 	limit=0;
 	temp = Brightness + Steps;
-	if (maxBrightness < temp)		//avoid overflow
+	if (maxBrightness < temp)		/* avoid overflow */
 		{
 		temp = maxBrightness;
 		limit = maxLimit;
@@ -117,15 +117,15 @@ void PWM_SetupDim(signed int PWM_dimsteps, signed char Steps, signed int minBrig
 	Brightness = temp;
 
 	temp = temp * (temp + 2) - PWM_set;
-	if ((temp > PWM_dimsteps) || ((temp<0) && (-temp>PWM_dimsteps)))	// if we have more difference then steps to go
+	if ((temp > PWM_dimsteps) || ((temp<0) && (-temp>PWM_dimsteps)))	/*  if we have more difference then steps to go */
 		{
 		PWM_incr = temp / PWM_dimsteps;
-		PWM_set += (temp - PWM_incr*PWM_dimsteps); 			//calc remainder, brackets to avoid overlow!?
+		PWM_set += (temp - PWM_incr*PWM_dimsteps); 			/* calc remainder, brackets to avoid overlow!? */
 		PWM_incr_cnt = PWM_dimsteps;
 		}
 	else
 		{
-		if (0<temp)		// if we would have a stepsize smaller then one, we better reduce the number of steps
+		if (0<temp)		/*  if we would have a stepsize smaller then one, we better reduce the number of steps */
 			{
 			PWM_incr = 1;
 			PWM_incr_cnt = temp;
@@ -133,7 +133,7 @@ void PWM_SetupDim(signed int PWM_dimsteps, signed char Steps, signed int minBrig
 		else if (0>temp)
 			{
 			PWM_incr = -1;
-			PWM_incr_cnt = -temp;				//count must be a positive number!
+			PWM_incr_cnt = -temp;				/* count must be a positive number! */
 			}
 		}
 }
@@ -153,7 +153,7 @@ unsigned int sqrt32(unsigned long a)
 	unsigned int divisor=0;
 	int i;
 
-	// Iterate 16 times, because the maximum number of bits in the result is 16 bits
+	/*  Iterate 16 times, because the maximum number of bits in the result is 16 bits */
 	for(i=0;i<16;i++)
 	{
 	   	root<<=1;
@@ -173,33 +173,33 @@ void SwLightOn()
 {
 	unsigned int relBrightness;
 	unsigned long temp;
-	unsigned char minBrightness;				//avoid reduction to very low brightness values by external light
+	unsigned char minBrightness;				/* avoid reduction to very low brightness values by external light */
 
-	if (0==LightOn)				  		//remote signal might try to switch a switched on light on again
+	if (0==LightOn)				  		/* remote signal might try to switch a switched on light on again */
 		{
 		relBrightness=sqrt32(ExtBrightness/ExtBrightness_last);
 
 		minBrightness = Read_EEPROM(EEAddr_MinimumFrontBrightness);
 		temp=Brightness_start;
 		temp=(temp*relBrightness)>>4;
-		if (maxBrightness < temp)					//limit brightness to maximum
+		if (maxBrightness < temp)					/* limit brightness to maximum */
 			{
 			Brightness = maxBrightness;
 			}
-		else if ((Brightness_start>temp) && (minBrightness>temp))	//limit brigntness ..
+		else if ((Brightness_start>temp) && (minBrightness>temp))	/* limit brigntness .. */
 			{
 			if (minBrightness>Brightness_start)
 				{
-				Brightness = Brightness_start;		// .. to last value if it is smaller than minimum brightness
+				Brightness = Brightness_start;		/*  .. to last value if it is smaller than minimum brightness */
 				}
 			else
 				{
-				Brightness = minBrightness;		// .. to minimum brightness if the last value was larger than the minimum brightness
+				Brightness = minBrightness;		/*  .. to minimum brightness if the last value was larger than the minimum brightness */
 				}
 			}
 		else
 			{
-			Brightness = temp;				// or just take the calculated value!
+			Brightness = temp;				/*  or just take the calculated value! */
 			}
 		PWM_SetupDim(fadetime, 0, 0);
 		LimitOutput();
@@ -209,7 +209,7 @@ void SwLightOn()
 
 void SwLightOff()
 {
-	if (1==LightOn)						//remote signal might try to switch a switched on light on again
+	if (1==LightOn)						/* remote signal might try to switch a switched on light on again */
 		{
 		LightOn=0;
 		Alarmflag=0;

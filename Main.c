@@ -1,28 +1,28 @@
-/**
+/*
  * Main Program of LampenSteuerung, a program to control a LED power supply by PWM or analogue signal
  * @file Main.c
  * use a P89LPC936 with internal 7.373 MHz RC oszilator
  * use a P89LPC935 or 936 with internal 7.373 MHz RC oszilator for the version without a LCD
  * Compiler options: -mmcs51 --iram-size 256 --xram-size 512 --code-size 16368 --std-sdcc99 --model-medium, all optimations on
- * SDCC 3.8.0
+ * SDCC 4.2.0
  */
 
-// This file defines registers available in P89LPC93X
+/* This file defines registers available in P89LPC93X */
 #include <p89lpc935_6.h>
 #include <stdio.h>
 
-#define noninvertedPWM
+/* #define noninvertedPWM */
 
-//#define LCD
+/* #define LCD */
 
 #define KeyPressShort	20
 #define KeyPressLong	60
-#define KeyPressLonger	KeyPressLong*2
+#define KeyPressLonger	240
 
-#define isrregisterbank	2		//for all isr on the SAME priority level 
+#define isrregisterbank	2		/* for all isr on the SAME priority level */ 
 
-void T0_isr(void) __interrupt (1);		//int from Timer 0 to read RC5 state
-void WDT_RTC_isr(void) __interrupt (10);	//int from internal RTC to update PWM, read keys, ...
+void T0_isr(void) __interrupt (1);		/* int from Timer 0 to read RC5 state */
+void WDT_RTC_isr(void) __interrupt (10);	/* int from internal RTC to update PWM, read keys, ... */
 
 __bit volatile TimerFlag;
 __bit FadeLightOutFlag;
@@ -53,7 +53,7 @@ __bit enableExtBrightness;
 #include "Options.c"
 #include "StatusLED.c"
 
-/** Main loop */
+/* Main loop */
 void main()
 {
 	unsigned char actionCounter=0xFF;
@@ -65,7 +65,7 @@ void main()
 	LCD_SendString2ndLine("LCD ok");
 	#endif
 
-	//load RAM values from EEPROM
+	/* load RAM values from EEPROM */
 	ReceiverMode=Read_EEPROM(EEAddr_ReceiverMode);
 	RC5Addr=Read_EEPROM(EEAddr_RC5Addr);
 
@@ -73,22 +73,22 @@ void main()
 
 	SwLightOn();
 
-	// Infinite loop
+	/* Infinite loop */
 	while(1) {
 		if (TimerFlag)
 			{
 			TimerFlag=0;
 			++actionCounter;
-			PWM_StepDim();		// do next dimming step
-			switch (LimitOutput())	// decide if temperature is ok and what to do about it, LimitOutput will act on PWM values
+			PWM_StepDim();		/* do next dimming step */
+			switch (LimitOutput())	/* decide if temperature is ok and what to do about it, LimitOutput will act on PWM values */
 				{
-				case 1:	//derating temperature
+				case 1:	/* derating temperature */
 					if (LightOn)
 						{
-						LEDTempDerating();	// flash status led red / white
+						LEDTempDerating();	/* flash status led red / white */
 						}
 					break;
-				case 2:	//overtemprature
+				case 2:	/* overtemprature */
 					if (LightOn)
 						{
 						SwLightOff();
@@ -97,15 +97,15 @@ void main()
 						#endif
 						}
 					break;
-				default: //normal operation
+				default: /* normal operation */
 					LEDTempReset();
 					break;
 				}
 			PWM_Set();
 
-			// check keys here since we can have only new input if timerflag was set by the keys interrupt program
-			// Select key is pressed, show preview of action
-			// need to check each time to generate single events directly from KeyPressDuration counter
+			/* check keys here since we can have only new input if timerflag was set by the keys interrupt program
+			   Select key is pressed, show preview of action
+			   need to check each time to generate single events directly from KeyPressDuration counter */
 			if (KeySelect == KeyState)
 				{
 				if (KeyPressShort == KeyPressDuration)
@@ -115,7 +115,7 @@ void main()
 					#endif
 					LEDSetupOptions(0);
 					}
-				else if (KeyPressLong == KeyPressDuration)
+				else if (KeyPressLonger == KeyPressDuration)
 					{
 					#ifdef LCD
 					LCD_SendStringFill2ndLine(&Canceltext[0]);
@@ -130,7 +130,7 @@ void main()
 					DecodeRemote();
 					MotionDetector();
 
-					MeasureTemperature();		// always measure temp or we can not exit overtemp anymore
+					MeasureTemperature();		/* always measure temp or we can not exit overtemp anymore */
 					#ifdef LCD
 					LCD_Temperature();
 					#endif
@@ -138,37 +138,37 @@ void main()
 				case 1:
 					if (LightOn)
 						{
-						StoreBrightness();	// store brightness if required
-						Alarm_StepDim();	// do next alarm dim step if required
-						FadeLightOut_StepDim();	// do next fade out dim step if required
+						StoreBrightness();	/* store brightness if required */
+						Alarm_StepDim();	/* do next alarm dim step if required */
+						FadeLightOut_StepDim();	/* do next fade out dim step if required */
 						LEDLimit();
 						}
 					else
 						{
-						if(!PWM_setlimited)	//switch ADC only on if DAC is really not needed any more
+						if(!PWM_setlimited)	/* switch ADC only on if DAC is really not needed any more */
 							{
 							ADMODB = ADC1;
 							DAC1Port = 0;
 							MeasureExtBrightness();
-							if (KeySelect != KeyState)	//protect preview from being overwritten
+							if (KeySelect != KeyState)	/* protect preview from being overwritten */
 								{
-								LEDStandby();	//dim standby led accoring to extranl brightness
+								LEDStandby();	/* dim standby led accoring to extranl brightness */
 								}
 							}
 						WriteTimer=0;
 			 			if(overTemp)
 			 				{
-							LEDOverTemp();	// flash status led red
+							LEDOverTemp();	/* flash status led red */
 							}
 						}
 					break;
 				case 2:
-					// A Key was pressed if OldKeyState != 0 and Keystate = 0
-					// OldKeyState = 0 must be set by receiving program after decoding as a flag
+					/* A Key was pressed if OldKeyState != 0 and Keystate = 0
+					   OldKeyState = 0 must be set by receiving program after decoding as a flag */
 					if ((KeySelect == OldKeyState) && (0 == KeyState))
 						{
-						OldKeyState=0;		//Ack any key anyway
-						MotionDetectorTimer=0;	//reset any Motion Detector activity
+						OldKeyState=0;		/* Ack any key anyway */
+						MotionDetectorTimer=0;	/* reset any Motion Detector activity */
 						if (KeyPressShort > KeyPressDuration)
 							{
 							if (LightOn)
@@ -182,12 +182,12 @@ void main()
 							}
 						else 
 							{
-							if (KeyPressLong > KeyPressDuration)
+							if (KeyPressLonger > KeyPressDuration)
 								{
 								Alarmflag=0;
 								Options();
 								}
-							if (LightOn)	// Cancel key pressing or return from options, refresh display
+							if (LightOn)	/* Cancel key pressing or return from options, refresh display */
 								{
 								LCD_SendBrightness();
 								LEDOn();
@@ -203,25 +203,25 @@ void main()
 						}
 					break;
 				case 3:
-					// A Rotation occured if EncoderSteps!= 0
-					// EncoderSteps = 0 must be set by receiving program after decoding
+					/* A Rotation occured if EncoderSteps!= 0
+					   EncoderSteps = 0 must be set by receiving program after decoding */
 					if (EncoderSteps)
 						{
 						Alarmflag=0;
 						if (LightOn)
 							{
 							PWM_SetupDim(Brightness_steps, EncoderSteps, 1);
-							EncoderSteps = 0;								//ack any steps
+							EncoderSteps = 0;	 		/*ack any steps */
 							LEDSetupLimit();
 							LCD_SendBrightness();
 							WriteTimer=WriteTime;
 							}
 						}
 
-					actionCounter=0xFF;	//last time slot, do reset counter with increment to 0
+					actionCounter=0xFF;	/* last time slot, do reset counter with increment to 0 */
 					break;
 				}
 			}
-		PCON=MCUIdle;				//go idel, wake up by any int
+		PCON=MCUIdle;				/* go idel, wake up by any int */
 	}
 }

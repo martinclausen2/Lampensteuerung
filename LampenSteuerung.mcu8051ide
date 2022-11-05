@@ -263,18 +263,18 @@
 		/>
 	</general>
 	<other_options><![CDATA[]]></other_options>
-	<compiler_options><![CDATA[{_title 0 _list 0 _print 0 _nomod 0 max_ihex_rec_length 255 _object 0 _pagelength 0 QUIET 0 _symbols 0 CREATE_SIM_FILE 1 CREATE_BIN_FILE 1 _pagewidth 0 optim_ena 0 _date 0 _paging 0 WARNING_LEVEL 0} 0 {--verbose 1 -i {} custom {} --columns 0 --omf-51 0} {adf 1} {-L 1 -M 0 custom {} -n 0 -P 0 -A 0 -a 0 -r {} -C 0 -c 0 -s 1 -U 0 -u 0 -g MAP -w 0 -cpu 8051 -x 0 -h 0 -quiet 0 -i {} -I 1} {ihex 1 adf 1} {--out-fmt-s19 0 --fdollars-in-identifiers 0 --nogcse 0 --nooverlay 0 --no-peep-comments 0 --no-c-code-in-asm 0 --print-search-dirs 0 --nostdlib 0 --nolabelopt 0 --short-is-8bits 0 --cyclomatic 0 --compile-only 0 --peep-asm 0 --no-reg-params 0 --noinvariant 0 --profile 0 --out-fmt-ihx 0 --noinduction 0 --opt-code-size 0 --nojtbound 0 --no-peep 0 --less-pedantic 0 --no-xinit-opt 0 --xstack 0 --funsigned-char 0 --verbose 1 -S 0 --debug 1 --preprocessonly 0 --opt-code-speed 0 --parms-in-bank1 0 --float-reent 0 -V 1 --c1mode 0 --fverbose-asm 0 --fommit-frame-pointer 0 --xram-movc 0 --main-return 0 --nostdinc 0 --noloopreverse 0 --stack-probe 0 --all-callee-saves 0 --int-long-reent 0 --stack-auto 0 --use-stdout 0} {standard --std-sdcc89 model --model-medium stack --pack-iram custom {}} {--stack-size {} --code-loc {} --constseg {} --codeseg {} --xram-loc {} --data-loc {} --stack-loc {} --xstack-loc {} --lib-path {}} {--disable-warning {} -L {} -l {} -I {}} {-l 1 -A {} custom {} -F hex} {adf 1}]]></compiler_options>
+	<compiler_options><![CDATA[{_title 0 _list 0 _print 0 _nomod 0 max_ihex_rec_length 255 _object 0 _pagelength 0 QUIET 0 _symbols 0 CREATE_SIM_FILE 1 CREATE_BIN_FILE 1 _pagewidth 0 optim_ena 0 _date 0 _paging 0 WARNING_LEVEL 0} 0 {--verbose 1 -i {} custom {} --columns 0 --omf-51 0} {adf 1} {-L 1 -M 0 custom {} -n 0 -P 0 -A 0 -a 0 -r {} -C 0 -c 0 -s 1 -U 0 -u 0 -g MAP -w 0 -cpu 8051 -x 0 -h 0 -quiet 0 -i {} -I 1} {ihex 1 adf 1} {--out-fmt-s19 0 --fdollars-in-identifiers 0 --nogcse 0 --nooverlay 0 --no-peep-comments 0 --no-c-code-in-asm 0 --print-search-dirs 0 --nostdlib 0 --compile-only 0 --peep-asm 0 --nolabelopt 0 --short-is-8bits 0 --cyclomatic 0 --no-reg-params 0 --noinvariant 0 --profile 0 --out-fmt-ihx 0 --noinduction 0 --opt-code-size 0 --nojtbound 0 --no-peep 0 --less-pedantic 0 --no-xinit-opt 0 --xstack 0 --funsigned-char 0 --verbose 1 -S 0 --debug 1 --preprocessonly 0 --opt-code-speed 0 --parms-in-bank1 0 --float-reent 0 -V 1 --c1mode 0 --fverbose-asm 0 --fommit-frame-pointer 0 --xram-movc 0 --main-return 0 --nostdinc 0 --noloopreverse 0 --stack-probe 0 --all-callee-saves 0 --int-long-reent 0 --stack-auto 0 --use-stdout 0} {standard --std-sdcc89 model --model-medium stack --pack-iram custom {}} {--stack-size {} --code-loc {} --constseg {} --codeseg {} --xram-loc {} --data-loc {} --stack-loc {} --xstack-loc {} --lib-path {}} {--disable-warning {} -L {} -l {} -I {}} {-l 1 -A {} custom {} -F hex} {adf 1}]]></compiler_options>
 	<files
-		count="8"
+		count="6"
 		current_file="0"
 		current_file2="-1"
 		pwin_sash="0"
 		selected_view="0"
 		pwin_orient="horizontal">
 
-		<file name="Main.c" active="yes" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
-			<actual_line value="14"/>
-			<md5_hash value="6DD663C3C2E443361B14280ABC24E066"/>
+		<file name="Main.c" active="no" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
+			<actual_line value="85"/>
+			<md5_hash value="FF9EC9C911877C3859D41B26B28A6D6F"/>
 			<path><![CDATA[]]></path>
 			<bookmarks>
 				0
@@ -288,8 +288,8 @@
 		</file>
 
 		<file name="LCD_EA_DOG_SPI.c" active="no" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
-			<actual_line value="154"/>
-			<md5_hash value="958FDE0A0409BFE87A8EE6A178C89E45"/>
+			<actual_line value="155"/>
+			<md5_hash value="CF6DFE1122CEEA1C9073B88426377B0B"/>
 			<path><![CDATA[]]></path>
 			<bookmarks>
 				0
@@ -303,8 +303,53 @@
 		</file>
 
 		<file name="LCD_EA_DOG_SPI.h" active="no" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
+			<actual_line value="57"/>
+			<md5_hash value="3AABC832C2E64B73E06F017CDA45EAB4"/>
+			<path><![CDATA[]]></path>
+			<bookmarks>
+				0
+			</bookmarks>
+			<breakpoints>
+				0
+			</breakpoints>
+			<eol value="lf"/>
+			<encoding value="utf-8"/>
+			<notes><![CDATA[]]></notes>
+		</file>
+
+		<file name="InitMCU.c" active="yes" o_bookmark="0" p_bookmark="0" file_index="4" read_only="0" highlight="1">
+			<actual_line value="162"/>
+			<md5_hash value="60496550CEFA57FE2AB25FC24834F3D1"/>
+			<path><![CDATA[]]></path>
+			<bookmarks>
+				0
+			</bookmarks>
+			<breakpoints>
+				0
+			</breakpoints>
+			<eol value="lf"/>
+			<encoding value="utf-8"/>
+			<notes><![CDATA[]]></notes>
+		</file>
+
+		<file name="Encoder.c" active="yes" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
+			<actual_line value="153"/>
+			<md5_hash value="4257C577438B9F83D736AB6A8DF5EC50"/>
+			<path><![CDATA[]]></path>
+			<bookmarks>
+				0
+			</bookmarks>
+			<breakpoints>
+				0
+			</breakpoints>
+			<eol value="lf"/>
+			<encoding value="utf-8"/>
+			<notes><![CDATA[]]></notes>
+		</file>
+
+		<file name="GetBrightness.c" active="no" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
 			<actual_line value="56"/>
-			<md5_hash value="741893696F0D6937C057961DE88D6A59"/>
+			<md5_hash value="C9258710863BC5A9C0FDB99E74EA0DA7"/>
 			<path><![CDATA[]]></path>
 			<bookmarks>
 				0
@@ -317,9 +362,9 @@
 			<notes><![CDATA[]]></notes>
 		</file>
 
-		<file name="InitMCU.c" active="no" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
-			<actual_line value="118"/>
-			<md5_hash value="133904D9B42782C1AA3F6657BD9E251A"/>
+		<file name="RC5.c" active="yes" o_bookmark="0" p_bookmark="0" file_index="2" read_only="0" highlight="1">
+			<actual_line value="181"/>
+			<md5_hash value="B0C9F4BAE7F0CF0DA3F44AEA75B1FCF9"/>
 			<path><![CDATA[]]></path>
 			<bookmarks>
 				0
@@ -332,114 +377,69 @@
 			<notes><![CDATA[]]></notes>
 		</file>
 
-		<file name="Encoder.c" active="no" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
+		<file name="Options.c" active="yes" o_bookmark="0" p_bookmark="0" file_index="5" read_only="0" highlight="1">
+			<actual_line value="206"/>
+			<md5_hash value="3558B71D014B49974AF34221641D4519"/>
+			<path><![CDATA[]]></path>
+			<bookmarks>
+				0
+			</bookmarks>
+			<breakpoints>
+				0
+			</breakpoints>
+			<eol value="lf"/>
+			<encoding value="utf-8"/>
+			<notes><![CDATA[]]></notes>
+		</file>
+
+		<file name="SetBrightness.h" active="no" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
+			<actual_line value="60"/>
+			<md5_hash value="5606ABEF4EA4B946F30B6232C3E92D67"/>
+			<path><![CDATA[]]></path>
+			<bookmarks>
+				0
+			</bookmarks>
+			<breakpoints>
+				0
+			</breakpoints>
+			<eol value="lf"/>
+			<encoding value="utf-8"/>
+			<notes><![CDATA[]]></notes>
+		</file>
+
+		<file name="Options.h" active="no" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
+			<actual_line value="9"/>
+			<md5_hash value="0349E452405FADA5EB5BA419C1246BF4"/>
+			<path><![CDATA[]]></path>
+			<bookmarks>
+				0
+			</bookmarks>
+			<breakpoints>
+				0
+			</breakpoints>
+			<eol value="lf"/>
+			<encoding value="utf-8"/>
+			<notes><![CDATA[]]></notes>
+		</file>
+
+		<file name="Keys.c" active="yes" o_bookmark="0" p_bookmark="0" file_index="1" read_only="0" highlight="1">
+			<actual_line value="4"/>
+			<md5_hash value="5ADBEEE0253348A949D19966F729B3B8"/>
+			<path><![CDATA[]]></path>
+			<bookmarks>
+				0
+			</bookmarks>
+			<breakpoints>
+				0
+			</breakpoints>
+			<eol value="lf"/>
+			<encoding value="utf-8"/>
+			<notes><![CDATA[]]></notes>
+		</file>
+
+		<file name="StatusLED.c" active="yes" o_bookmark="0" p_bookmark="0" file_index="3" read_only="0" highlight="1">
 			<actual_line value="27"/>
-			<md5_hash value="7D706434CF77A6BD3CA96F6F89BF3421"/>
-			<path><![CDATA[]]></path>
-			<bookmarks>
-				0
-			</bookmarks>
-			<breakpoints>
-				0
-			</breakpoints>
-			<eol value="lf"/>
-			<encoding value="utf-8"/>
-			<notes><![CDATA[]]></notes>
-		</file>
-
-		<file name="GetBrightness.c" active="yes" o_bookmark="0" p_bookmark="0" file_index="3" read_only="0" highlight="1">
-			<actual_line value="18"/>
-			<md5_hash value="C10BDB09E28E973604E762890AB6F8B4"/>
-			<path><![CDATA[]]></path>
-			<bookmarks>
-				0
-			</bookmarks>
-			<breakpoints>
-				0
-			</breakpoints>
-			<eol value="lf"/>
-			<encoding value="utf-8"/>
-			<notes><![CDATA[]]></notes>
-		</file>
-
-		<file name="RC5.c" active="no" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
-			<actual_line value="99"/>
-			<md5_hash value="68D7C13FEBDC9F70A859D5E889E663AB"/>
-			<path><![CDATA[]]></path>
-			<bookmarks>
-				0
-			</bookmarks>
-			<breakpoints>
-				0
-			</breakpoints>
-			<eol value="lf"/>
-			<encoding value="utf-8"/>
-			<notes><![CDATA[]]></notes>
-		</file>
-
-		<file name="Options.c" active="yes" o_bookmark="0" p_bookmark="0" file_index="4" read_only="0" highlight="1">
-			<actual_line value="374"/>
-			<md5_hash value="463D3273EB00708854DCC5E2C4C5AE50"/>
-			<path><![CDATA[]]></path>
-			<bookmarks>
-				0
-			</bookmarks>
-			<breakpoints>
-				0
-			</breakpoints>
-			<eol value="lf"/>
-			<encoding value="utf-8"/>
-			<notes><![CDATA[]]></notes>
-		</file>
-
-		<file name="SetBrightness.h" active="yes" o_bookmark="0" p_bookmark="0" file_index="5" read_only="0" highlight="1">
-			<actual_line value="23"/>
-			<md5_hash value="41C7EBC0A2EF3B368CCB8E7BED7FD6B8"/>
-			<path><![CDATA[]]></path>
-			<bookmarks>
-				0
-			</bookmarks>
-			<breakpoints>
-				0
-			</breakpoints>
-			<eol value="lf"/>
-			<encoding value="utf-8"/>
-			<notes><![CDATA[]]></notes>
-		</file>
-
-		<file name="Options.h" active="yes" o_bookmark="0" p_bookmark="0" file_index="7" read_only="0" highlight="1">
-			<actual_line value="70"/>
-			<md5_hash value="22D6A1473D2B86E47738488242E529B1"/>
-			<path><![CDATA[]]></path>
-			<bookmarks>
-				0
-			</bookmarks>
-			<breakpoints>
-				0
-			</breakpoints>
-			<eol value="lf"/>
-			<encoding value="utf-8"/>
-			<notes><![CDATA[]]></notes>
-		</file>
-
-		<file name="Keys.c" active="no" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
-			<actual_line value="15"/>
-			<md5_hash value="79CA011974A64A3AAB2995BE41C9CEC6"/>
-			<path><![CDATA[]]></path>
-			<bookmarks>
-				0
-			</bookmarks>
-			<breakpoints>
-				0
-			</breakpoints>
-			<eol value="lf"/>
-			<encoding value="utf-8"/>
-			<notes><![CDATA[]]></notes>
-		</file>
-
-		<file name="StatusLED.c" active="yes" o_bookmark="0" p_bookmark="0" file_index="2" read_only="0" highlight="1">
-			<actual_line value="46"/>
-			<md5_hash value="C3734672655F5A144931A3DAAFAC7E11"/>
+			<md5_hash value="E5C1C808B001223108980451BF86D22A"/>
 			<path><![CDATA[]]></path>
 			<bookmarks>
 				0
@@ -453,8 +453,8 @@
 		</file>
 
 		<file name="GetTemperature.c" active="no" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
-			<actual_line value="57"/>
-			<md5_hash value="61B39195F25C03D5A87DB735F535AA6E"/>
+			<actual_line value="71"/>
+			<md5_hash value="6E2B1200B66841F9764651EC8A316907"/>
 			<path><![CDATA[]]></path>
 			<bookmarks>
 				0
@@ -467,9 +467,9 @@
 			<notes><![CDATA[]]></notes>
 		</file>
 
-		<file name="StatusLED.h" active="yes" o_bookmark="0" p_bookmark="0" file_index="1" read_only="0" highlight="1">
-			<actual_line value="8"/>
-			<md5_hash value="78844649B372EA13F2985DCAB7799E82"/>
+		<file name="StatusLED.h" active="no" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
+			<actual_line value="12"/>
+			<md5_hash value="13D6B5FA291EA9115FA687127E0213BC"/>
 			<path><![CDATA[]]></path>
 			<bookmarks>
 				0
@@ -483,8 +483,8 @@
 		</file>
 
 		<file name="GetTemperature.h" active="no" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
-			<actual_line value="13"/>
-			<md5_hash value="384AE256C3C9A69B4DBFB372401E3861"/>
+			<actual_line value="21"/>
+			<md5_hash value="57885BA058595079DBB512F0114A5094"/>
 			<path><![CDATA[]]></path>
 			<bookmarks>
 				0
@@ -498,8 +498,8 @@
 		</file>
 
 		<file name="MotionDetector.c" active="no" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
-			<actual_line value="7"/>
-			<md5_hash value="845B98684BB6566F28C3A367BE2CB82B"/>
+			<actual_line value="1"/>
+			<md5_hash value="5C43937164135B2156D942F795A893C3"/>
 			<path><![CDATA[]]></path>
 			<bookmarks>
 				0
@@ -513,8 +513,8 @@
 		</file>
 
 		<file name="EEPROM.c" active="no" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
-			<actual_line value="3"/>
-			<md5_hash value="4FCA6607F00E1E464C323C4046527AD4"/>
+			<actual_line value="20"/>
+			<md5_hash value="D22F7601DB47BD2F35722A7B4116E09B"/>
 			<path><![CDATA[]]></path>
 			<bookmarks>
 				0
@@ -527,9 +527,9 @@
 			<notes><![CDATA[]]></notes>
 		</file>
 
-		<file name="SetBrightness.c" active="yes" o_bookmark="0" p_bookmark="0" file_index="6" read_only="0" highlight="1">
-			<actual_line value="223"/>
-			<md5_hash value="92E55684A06007492D78B68673645E7E"/>
+		<file name="SetBrightness.c" active="no" o_bookmark="0" p_bookmark="0" file_index="0" read_only="0" highlight="1">
+			<actual_line value="240"/>
+			<md5_hash value="9B46017CB7CDA2644F893CC5D47703DB"/>
 			<path><![CDATA[]]></path>
 			<bookmarks>
 				0
