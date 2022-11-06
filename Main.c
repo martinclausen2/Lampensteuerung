@@ -16,8 +16,8 @@
 /* #define LCD */
 
 #define KeyPressShort	20
-#define KeyPressLong	60
-#define KeyPressLonger	240
+#define KeyPressLong	100
+#define KeyPressLonger	200
 
 #define isrregisterbank	2		/* for all isr on the SAME priority level */ 
 
@@ -108,7 +108,7 @@ void main()
 			   need to check each time to generate single events directly from KeyPressDuration counter */
 			if (KeySelect == KeyState)
 				{
-				if (KeyPressShort == KeyPressDuration)
+				if (KeyPressLong == KeyPressDuration)
 					{
 					#ifdef LCD
 					LCD_SendStringFill2ndLine("Enter Options");
@@ -169,7 +169,7 @@ void main()
 						{
 						OldKeyState=0;		/* Ack any key anyway */
 						MotionDetectorTimer=0;	/* reset any Motion Detector activity */
-						if (KeyPressShort > KeyPressDuration)
+						if (KeyPressLong > KeyPressDuration)
 							{
 							if (LightOn)
 								{

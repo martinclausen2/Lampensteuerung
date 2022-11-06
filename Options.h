@@ -67,7 +67,7 @@ __code char OptionNames[maxOption+1][17] = {
 				 	 "Receiver Mode   ",
 				 	 "Reset settings  ",
 				 	 "LCD Contrast    ",
-				 	 "V3 2016-07-14   "};
+				 	 "V5 2022-11-06   "};
 
 __code char noyestext[2][4] = {" no", "yes"};
 
